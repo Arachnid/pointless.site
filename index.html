@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+    <title>pointless.site</title>
+    <style>
+        body {
+            text-align: center;
+        }
+        h1 {
+            font-size: 20em;
+            cursor: pointer;
+            font-family: Helvetica sans-serif;
+            user-select: none;
+            margin-bottom: 0;
+        }
+    </style>
+    <script>
+        window.addEventListener("load", function() {
+            var num = document.getElementById("number");
+            var tweet = document.getElementById("tweet");
+            var timeout = null;
+
+            function addLink(num) {
+                twttr.widgets.createShareButton('https://pointless.site/', tweet, {
+                    text: "I got " + num + ". What can you get?",
+                    size: "large"
+                });
+                timeout = null;
+            }
+
+            num.addEventListener("click", function() {
+                var inc = 1;
+                while(Math.random() < 0.5) {
+                    inc *= 2;
+                }
+                var total = parseInt(num.textContent) + inc;
+                num.textContent = total;
+                while(tweet.firstChild) tweet.removeChild(tweet.firstChild);
+                if(timeout != null) {
+                    window.clearTimeout(timeout);
+                }
+                timeout = window.setTimeout(addLink, 500, total);
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1 id="number">0</h1>
+    <div id="tweet"></div>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</body>
+</html>
